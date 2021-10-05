@@ -71,7 +71,7 @@ export default {
   .item {
     color: #ffffff;
     &:hover {
-      color: #1fa1f1;
+      color: #1a6899;
     }
   }
   .menu.left {
