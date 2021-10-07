@@ -16,14 +16,14 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import BasicLayouts from '../layouts/BasicLayouts.vue';
-import Products from '../components/Product.vue';
-import { getProductsCategory, getProducts } from '../api/product';
+import Product from '../components/Product.vue';
+import { getCategoriesApi, getProductsCategory } from '../api/product';
 
 export default {
   name: 'Category',
   components: {
     BasicLayouts,
-    Products,
+    Product,
   },
 
   watch: {
