@@ -23,7 +23,7 @@
         <template v-if="token">
           <router-link class="item" to="/orders">Pedidos</router-link>
           <span class="ui item cart">
-            <i class="shopping cart icon"></i>
+            <i class="shopping cart icon" @click="openCart"></i>
           </span>
           <span class="ui item logout" @click="logout">
             <i class="sign-out icon"></i>
@@ -36,6 +36,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
 import { getTokenApi, deleteTokenApi } from '../api/token';
 import { getCategoriesApi } from '../api/category';
 
@@ -44,22 +45,28 @@ export default {
 
   setup() {
     let categories = ref(null);
+    const token = getTokenApi();
+    const store = useStore();
 
     onMounted(async () => {
       const response = await getCategoriesApi();
       categories.value = response;
     });
 
-    const token = getTokenApi();
-
     const logout = () => {
       deleteTokenApi();
       location.replace('/');
     };
+
+    const openCart = () => {
+      store.commit('setShowCart', true);
+    };
+
     return {
       token,
       logout,
       categories,
+      openCart,
     };
   },
 };
@@ -67,7 +74,7 @@ export default {
 
 <style lang="scss" scoped>
 .ui.menu.secondary {
-  background: #1fa1f1;
+  background-image: url('../assets/header-img.jpg');
   .item {
     color: #ffffff;
     &:hover {
