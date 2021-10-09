@@ -14,15 +14,15 @@
         <tr v-for="product in products" :key="product.id">
           <td>{{ product.name }}</td>
           <td>{{ product.quantity }}</td>
-          <td>{{ product.price }} $</td>
+          <td>$ {{ product.price }}</td>
           <td style="text-align: center">
-            <i class="close icon"></i>
+            <i class="close icon" @click="deleteAllProductCart(product.id)"></i>
           </td>
         </tr>
         <tr>
           <td></td>
           <td>Total:</td>
-          <td colspan="2">{{ total }}$</td>
+          <td colspan="2">$ {{ getTotal() }}</td>
         </tr>
       </tbody>
     </table>
@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { watchEffect, ref } from 'vue';
 import BasicLayouts from '../layouts/BasicLayouts.vue';
-import { getProductsCartApi } from '../api/cart';
+import { getProductsCartApi, deleteAllProductCartApi } from '../api/cart';
 
 export default {
   name: 'Cart',
@@ -47,17 +47,35 @@ export default {
   },
   setup() {
     let products = ref(null);
+    let realoadCart = ref(false);
 
-    onMounted(async () => {
+    watchEffect(async () => {
+      realoadCart.value;
       const response = await getProductsCartApi();
       products.value = response;
     });
 
+    const getTotal = () => {
+      let totalTemp = 0;
+      products.value.forEach((product) => {
+        totalTemp += product.price * product.quantity;
+      });
+      return totalTemp.toFixed(2);
+    };
+
+    const deleteAllProductCart = (idProduct) => {
+      deleteAllProductCartApi(idProduct);
+      realoadCart.value = !realoadCart.value;
+    };
+
     return {
       products,
+      getTotal,
+      deleteAllProductCart,
     };
   },
 };
 </script>
 
 <style></style>
+$
