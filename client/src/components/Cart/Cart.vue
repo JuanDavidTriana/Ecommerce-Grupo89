@@ -5,6 +5,7 @@
       <CartHeader :closeCart="closeCart" />
       <CartBody :products="products" />
     </div>
+    <CartoFooter :products="products" :closeCart="closeCart" v-if="products" />
   </div>
 </template>
 
@@ -13,6 +14,7 @@ import { ref, computed, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import CartHeader from './CartHeader.vue';
 import CartBody from './CartBody.vue';
+import CartoFooter from './CartFooter.vue';
 import { getProductsCartApi } from '../../api/cart';
 
 export default {
@@ -20,6 +22,7 @@ export default {
   components: {
     CartHeader,
     CartBody,
+    CartoFooter,
   },
   setup() {
     const store = useStore();
